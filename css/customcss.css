@@ -1,0 +1,14 @@
+.dev_loginlogo{
+    margin-top: 5rem !important;
+    
+}
+.dev_loginbox{
+    margin-top: 10rem !important;
+}
+.imgloginlogo{
+    position: absolute;
+    left: 50%;
+    margin-left: -70px;
+    width:140px;
+    height: auto;
+}

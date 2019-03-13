@@ -1,0 +1,15 @@
+{
+    "name": "arifrdon/bkci",
+    "description": "Aplikasi BK Code Igniter",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Arif Romdoni",
+            "email": "arifrdon@gmail.com"
+        }
+    ],
+    "require": {
+        "setasign/fpdf": "^1.8"
+    }
+}
