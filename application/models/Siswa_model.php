@@ -38,6 +38,14 @@ class Siswa_model extends CI_Model{
     {
         return $this->db->get_where($this->_table,["no_induk"=> $id])->row();
     }
+    public function getSiswaOrtuById($id)
+    {
+        $this->db->select('a.no_induk, a.nama_siswa, b.user_nama');
+        $this->db->from($this->_table." as a");
+        $this->db->join("orang_tua as b","a.id_orang_tua = b.id_orang_tua","inner");
+        $this->db->where("a.no_induk ",$id);
+        return $this->db->get()->row();
+    }
 
 
     public function save()

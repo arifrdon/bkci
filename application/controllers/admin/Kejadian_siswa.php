@@ -162,7 +162,7 @@ class Kejadian_siswa extends CI_Controller{
                 $row[] = "
                 <a href='".  site_url('admin/kejadian_siswa/score_list/score_detail/'.$information->noindukdistinct.'/'.$information->poin_akhir) ."' class='btn btn-small'><i class='fas fa-list-ol'></i>&nbsp;Detail</a>
                 "."
-                <a href='' class='btn btn-small'><i class='fas fa-file-pdf'></i>&nbsp;Cetak</a>
+                <a target='_blank' href='".  site_url('admin/kejadian_siswa/printpdf/'.$information->noindukdistinct)."' class='btn btn-small'><i class='fas fa-file-pdf'></i>&nbsp;Cetak</a>
                 ";
            
             $data[] = $row;
@@ -176,12 +176,208 @@ class Kejadian_siswa extends CI_Controller{
         //output to json format
         echo json_encode($output);
     }
-    function printpdf(){
-        $pdf = new PDF_MC_Table();
+    function printpdf($id){
+        $this->load->library('PDF_MC_Table');
+        $this->load->model('siswa_model','siswa');
+        $this->load->model('pengaturan_bk_model','pengaturan_bk');
+        $this->load->model('guru_model','guru');
+        $row1 = $this->siswa->getSiswaOrtuById($id);
+        $row2 = $this->kejadian_siswa_model->getScoreDetail($id);
+        //print_r( $row2[0]->NAMA_KEJADIAN);
+        $arrpengaturan = $this->pengaturan_bk->getAll();
+        $tglblnthn = $this->gettodaydate();
+        $qttd3nama_guru = $this->guru->getById($arrpengaturan[7]->NILAI_PENGATURAN);
+        $h_pertama = $arrpengaturan[0]->NILAI_PENGATURAN;
+
+        $pdf = new PDF_MC_Table( 'P', 'mm', 'A4' );
+        $pdf->AliasNbPages();
         $pdf->AddPage();
-        $pdf->SetFont('Arial','B',16);
-        $pdf->Cell(40,10,'Hello World!');
+
+        //header awal
+
+            $pdf->SetFont('Arial','B',15);
+            // Move to the right
+            //$this->Cell(100);
+            // Title
+            //nantiditambah
+                    //$pdf->Image('../../imagesupload/logoparlaungan.jpg',10,8,20,20);
+                    
+                    //$pdf->Image('../../imagesupload/logoparlaungan.jpg',180,8,20,20);
+            
+            $pdf->Cell(0,5,''.$arrpengaturan[3]->NILAI_PENGATURAN,0,1,'C');
+            $pdf->Cell(0,5,''.$arrpengaturan[4]->NILAI_PENGATURAN,0,1,'C');
+            $pdf->SetFont('Arial','',8);
+            $pdf->Cell(0,5,''.$arrpengaturan[5]->NILAI_PENGATURAN,0,1,'C');
+                $pdf->Cell(0,5,''.$arrpengaturan[6]->NILAI_PENGATURAN,0,1,'C');
+                $pdf->Cell(0,5,'',0,1,'C');
+            // Line break
+            $pdf->SetFont('Arial','',11);
+            $pdf->Line(5, 32, 210-5, 32);
+            $pdf->Cell(0,5,'Lampiran    : 1(satu) lembar',0,1,'L');
+            $pdf->Cell(0,5,'Hal              : Pemberitahuan Ke Orang Tua',0,1,'L');
+            $pdf->Cell(0,5,'',0,1,'L');
+            $pdf->Cell(0,5,'Kepada Yth.',0,1,'L');
+            $pdf->Cell(0,5,'Bapak '.$row1->user_nama,0,1,'L');
+            $pdf->Cell(0,5,'Di Tempat ',0,1,'L');
+            $pdf->Ln(15);
+        //header akhir
+
+        $pdf->SetFont('Times','I',11);
+        $pdf->Cell(0,5,'Bismillaahirrohmaanirrohiim',0,1,'C');
+        $pdf->Cell(0,5,'',0,1,'C');
+        $pdf->Cell(0,5,'Assalamu\'alaikum Wr.Wb',0,1,'L');
+        $pdf->Cell(0,5,'',0,1,'C');
+        $pdf->SetFont('Times','',11);
+        $reportSubtitle = "            Alhamdulillah, segala puji hanya milik Allah S.W.T, sholawat serta salam semoga tetap tercurah kepada Rasulullah Muhammad SAW beserta keluarga, sahabat dan segenap pengikutnya sehingga kita tergolong pengikut beliau yang setia. Amin.";
+        $reportSubtitle2 = "            Sehubungan dengan pelanggaran yang kerap dilakukan oleh siswa Bapak / Ibu atas nama : ";
+        $namasiswa = "            ".$row1->nama_siswa."                       No Induk : ".$row1->no_induk;
+        $reportSubtitle3 = "Maka kami memberitahukan hal ini kepada Bapak/ Ibu agar dapat diberi perhatian khusus kepada putra / putrinya";
+        $reportSubtitle4 = "            Demikian surat pemberitahuan ini. Semoga Allah SWT meridhoi segala upaya kita. Amin.";
+        $reportSubtitle5 = "Wassalamu'alaikum Wr.Wb";
+        $tandatgn1="Sidoarjo, ".$tglblnthn;
+        $tandatgn2="Kepala Sekolah";
+        //$tandatgn3="SMP Islam Parlaungan";
+        $tandatgn4="".$qttd3nama_guru->nama_guru;
+        $pdf->MultiCell( 0, 5, $reportSubtitle, 0,1);
+        $pdf->MultiCell( 0, 5, $reportSubtitle2, 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->SetFont('Times','B',11);
+        $pdf->MultiCell( 0, 5, $namasiswa, 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->SetFont('Times','',11);
+        $pdf->MultiCell( 0, 5, $reportSubtitle3, 0,1);
+        $pdf->MultiCell( 0, 5, $reportSubtitle4, 0,1);
+        $pdf->MultiCell( 0, 5, $reportSubtitle5, 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->cell(129);
+        $pdf->MultiCell( 0, 5, $tandatgn1, 0);
+        $pdf->cell(129);
+        $pdf->MultiCell( 0, 5, $tandatgn2, 0);
+        $pdf->cell(129);
+        //$pdf->MultiCell( 0, 5, $tandatgn3, 0);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->MultiCell( 0, 5, '', 0,1);
+        $pdf->SetFont('Times','BU',11);
+        $pdf->cell(129);
+        $pdf->MultiCell( 0, 5, $tandatgn4, 0);
+
+        //footer awal
+
+            $pdf->SetY(-38);
+
+            $pdf->SetFont('Arial','',8);
+        //	$pdf->Cell(0,5,'Islamic International School of Al Falah Darussalam',0,1,'C');
+        //		$pdf->Cell(0,5,'Al Falah Darussalam Primary School',0,1,'C');
+        //		$pdf->SetFont('Arial','I',8);
+        //		$pdf->Cell(0,5,'Let\'s go to be Better for Excellent Future',0,1,'C');
+        //		$pdf->SetFont('Arial','',8);
+
+        //footer akhir
+
+
+        $pdf->AddPage();
+        $lamp1="LAMPIRAN";
+        $lamp2="No Induk: ".$row1->no_induk;
+        $lamp3="NAMA: ".$row1->nama_siswa;
+        $pdf->MultiCell( 0, 5, '', 0);
+        $pdf->Cell( 18, 5, $lamp1,1,1);
+        $pdf->MultiCell( 0, 5, '', 0);
+        $pdf->SetFont('Times','B',11);
+        $pdf->MultiCell( 0, 5, $lamp2, 0);
+        $pdf->MultiCell( 0, 5, $lamp3, 0);
+        $pdf->MultiCell( 0, 5, '', 0);
+        $pdf->MultiCell( 0, 5, '', 0);
+        /*
+        $pdf->SetFont('Arial','',12);
+        $pdf->SetY(38);
+        $pdf->SetX(10);
+        $pdf->MultiCell(50,6,'Nama Kejadian',1);
+        $pdf->SetY(38);
+        $pdf->SetX(60);
+        $pdf->MultiCell(80,6,'Tanggal Kejadian',1);
+        $pdf->SetY(38);
+        $pdf->SetX(140);
+        $pdf->MultiCell(30,6,'Tipe Kejadian',1,'R');
+        $pdf->SetY(38);
+        $pdf->SetX(170);
+        $pdf->MultiCell(30,6,'Poin ',1,'R');
+        */
+
+        $c_nama = "";
+        $c_tanggal = "";
+        $c_tipe = "";
+        $c_poin = "";
+        $awal = $h_pertama;
+        $total=0;
+
+        $pdf->SetY(44);
+        $pdf->SetX(10);
+        $pdf->MultiCell(80,6,'Poin Awal : '.$awal,0);
+        $pdf->SetY(44);
+        $pdf->SetX(90);
+        $pdf->MultiCell(50,6,'',0);
+        $pdf->SetY(44);
+        $pdf->SetX(140);
+        $pdf->MultiCell(30,6,'',0,'R');
+        $pdf->SetY(44);
+        $pdf->SetX(170);
+        $pdf->MultiCell(30,6,'',0,'R');
+        $pdf->MultiCell( 0, 5, '', 0,1);
+
+        $pdf->SetFont('times','B',10);
+        $pdf->SetWidths(array(80, 50, 30, 30));
+        //$pdf->SetHeight(0.1);
+        $pdf->Row(array("Nama kejadian", "Tanggal", "Tipe", "Poin"));
+    
+        //For each row, add the field to the corresponding column
+        foreach($row2 as $r2){
+            $poin2 = $r2->POIN_KEJADIAN;
+            $newDate = $this->convertdate($r2->TANGGAL_KEJADIAN);
+
+            if ($r2->TIPE_KEJADIAN=='reward'){
+                if($this->session->userdata('fitur_reward') == 1){
+                    $pdf->SetFont('times','',10);
+                    if($this->session->userdata('operator_bk') == "kurang"){
+                        $pdf->Row(array($r2->NAMA_KEJADIAN, $newDate, $r2->TIPE_KEJADIAN, '+'.$poin2));
+                        $total = $total+($r2->POIN_KEJADIAN);
+                    }
+                    if($this->session->userdata('operator_bk') == "tambah"){
+                        $pdf->Row(array($r2->NAMA_KEJADIAN, $newDate, $r2->TIPE_KEJADIAN, '-'.$poin2));
+                        $total = $total-($r2->POIN_KEJADIAN);
+                    }
+                }
+            } 
+                else 
+            {
+                if($this->session->userdata('operator_bk') == "kurang"){
+                    $pdf->SetFont('times','',10);
+                    $pdf->Row(array($r2->NAMA_KEJADIAN, $newDate, $r2->TIPE_KEJADIAN, '-'.$poin2));
+                    $total = $total-($r2->POIN_KEJADIAN);
+                }
+                if($this->session->userdata('operator_bk') == "tambah"){
+                    $pdf->SetFont('times','',10);
+                    $pdf->Row(array($r2->NAMA_KEJADIAN, $newDate, $r2->TIPE_KEJADIAN, '+'.$poin2));
+                    $total = $total+($r2->POIN_KEJADIAN);
+                }
+            }
+
+        }
+        $hasilakhir = $awal+$total;
+        $pdf->SetFont('Times','B',11);
+        $pdf->MultiCell(0, 5, '', 0,1);
+        $pdf->MultiCell(30,6,'TOTAL : '.$hasilakhir,0,'L');
+
         $pdf->Output();
+
     }
     public function convertdate($tanggal){
         $namatanggal=date("d",strtotime($tanggal)); 
@@ -192,6 +388,21 @@ class Kejadian_siswa extends CI_Controller{
         $namajam = date("H",strtotime($tanggal));
         $namamenit = date("i",strtotime($tanggal));
 		return $namatanggal." ".$namabulan." ".$namatahun." ".$namajam.":".$namamenit;
+    }
+
+    public function gettodaydate(){
+        //tanggal bulan tahun
+        /* script menentukan hari */  
+        $array_hr= array(1=>"Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu");
+        $hr = $array_hr[date('N')];
+        /* script menentukan tanggal */   
+        $tgl= date('j');
+        /* script menentukan bulan */
+        $array_bln = array(1=>"Januari","Februari","Maret", "April", "Mei","Juni","Juli","Agustus","September","Oktober", "November","Desember");
+        $bln = $array_bln[date('n')];
+        /* script menentukan tahun */ 
+        $thn = date('Y');
+		return $tgl." ".$bln." ".$thn;
     }
 
 }
