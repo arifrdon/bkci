@@ -1,1 +1,1 @@
-bkci
+Aplikasi BK Code Igniter
