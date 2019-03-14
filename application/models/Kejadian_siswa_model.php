@@ -47,7 +47,25 @@ class Kejadian_siswa_model extends CI_Model{
             'rules' => 'required']
         ];
     }
+    public function rulesreport(){
+        return [
+            ['field' => 'dtpstart',
+            'label' => 'Tanggal Mulai',
+            'rules' => 'required'],
+          
+            ['field' => 'dtpend',
+            'label' => 'Tanggal Akhir',
+            'rules' => 'required'],
 
+            ['field' => 'id_kelas',
+            'label' => 'Kelas',
+            'rules' => 'required'],
+
+            ['field' => 'tipe_kejadian',
+            'label' => 'Tipe Kejadian',
+            'rules' => 'required']
+        ];
+    }
     function _get_datatables_query()
     {
         
@@ -169,14 +187,12 @@ class Kejadian_siswa_model extends CI_Model{
         $this->ID_DAFTAR_KEJADIAN = $post["id_daftar_kejadian"];
         $this->TANGGAL_KEJADIAN = $post['tanggalkejadian']." ".$post['jam'];
         $this->db->update($this->_table, $this, array('ID_KEJADIAN_SISWA' => $this->ID_KEJADIAN_SISWA));
-    
     }
 
     public function delete($id)
     {
         $this->load->model('forum_kejadian_model','forum_kejadian');
         $this->load->model('notif_bk_model','notif_bk');
-
         $this->db->trans_start();
         $this->forum_kejadian->deleteByKejadian($id);
         $this->notif_bk->deleteByKejadian($id);
@@ -358,5 +374,33 @@ class Kejadian_siswa_model extends CI_Model{
         }
         return $this->db->get()->result();
     }
-   
+    public function getLaporanDetail($isget=false)
+    {
+        if($isget === TRUE){
+            $post = $this->input->get();
+        } else {
+            $post = $this->input->post();
+        }
+        $post["dtpstart"] = $post["dtpstart"]." 00:00:00";
+        $post["dtpend"] = $post["dtpend"]."  23:59:59";
+
+        $this->db->select('a.ID_KEJADIAN_SISWA, a.NO_INDUK, c.nama_siswa,  b.NAMA_KEJADIAN,b.POIN_KEJADIAN,b.TIPE_KEJADIAN ,a.TANGGAL_KEJADIAN, e.nama_kelas,e.id_kelas');
+        $this->db->from($this->_table." as a");
+        $this->db->join('daftar_kejadian as b', 'a.ID_DAFTAR_KEJADIAN=b.ID_DAFTAR_KEJADIAN', 'inner');
+        $this->db->join('siswa as c', 'c.no_induk=a.NO_INDUK', 'inner');
+        $this->db->join('wali_kelas as d', 'c.id_wali_kelas = d.id_wali_kelas', 'inner');
+        $this->db->join('kelas as e', 'd.id_kelas = e.id_kelas', 'inner');
+        $this->db->where("a.AKTIF",1);
+        if($post["tipe_kejadian"] == "pelanggaran"){
+            $this->db->where("b.TIPE_KEJADIAN","pelanggaran");
+        }
+        if($post["tipe_kejadian"] == "reward"){
+            $this->db->where("b.TIPE_KEJADIAN","reward");
+        }
+        if($post["id_kelas"] != "semua"){
+            $this->db->where("e.id_kelas",$post["id_kelas"]);
+        }
+        $this->db->where("a.TANGGAL_KEJADIAN between '".$post["dtpstart"]."' and '".$post["dtpend"]."'");
+        return $this->db->get()->result();
+    }
 }

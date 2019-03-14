@@ -83,12 +83,13 @@
             <a class="dropdown-item" href="<?php echo site_url('admin/kejadian_siswa/add') ?>">Tambah Kejadian Siswa</a>
             <a class="dropdown-item" href="<?php echo site_url('admin/kejadian_siswa') ?>">List Kejadian Siswa</a>
             <a class="dropdown-item" href="<?php echo site_url('admin/kejadian_siswa/score_list') ?>">Skor Kejadian Siswa</a>
+            <a class="dropdown-item" href="<?php echo site_url('admin/kejadian_siswa/laporan_bk') ?>">Laporan Kejadian Siswa</a>
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="tables.html">
+          <a class="nav-link" href="<?php echo site_url('admin/pengaturan_bk/edit') ?>">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Settings</span></a>
+            <span>Pengaturan BK</span></a>
         </li>
       </ul>
 

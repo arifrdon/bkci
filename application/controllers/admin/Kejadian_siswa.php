@@ -105,6 +105,31 @@ class Kejadian_siswa extends CI_Controller{
         }
         print_r($this->db->last_query());
     }
+    public function laporan_bk(){
+        $this->load->model('kelas_model','kelas');
+        $data["kelas"] = $this->kelas->getDropdownLaporan();
+        $validation = $this->form_validation;
+        $validation->set_rules($this->kejadian_siswa_model->rulesreport());
+        if($validation->run()){
+            $data["laporan"] = $this->kejadian_siswa_model->getLaporanDetail();
+            foreach ($data["laporan"] as $lap){
+                $lap->TANGGAL_KEJADIAN = $this->convertdate($lap->TANGGAL_KEJADIAN);
+            }
+            $post = $this->input->post();
+            $data["dtpstart_b"] = $post["dtpstart"];
+            $data["dtpend_b"] = $post["dtpend"];
+            $data["id_kelas_b"] = $post["id_kelas"];
+            $data["tipe_kejadian_b"] = $post["tipe_kejadian"];
+        }
+        
+        $this->load->view('admin/kejadian_siswa/laporan_bk', $data);
+        
+    }
+    public function printexcel(){
+        $data["laporan"] = $this->kejadian_siswa_model->getLaporanDetail(TRUE);
+        $this->load->view('admin/kejadian_siswa/laporan_excel', $data);
+        
+    }
     public function ajax_list()
     {
         
@@ -379,6 +404,7 @@ class Kejadian_siswa extends CI_Controller{
         $pdf->Output();
 
     }
+    
     public function convertdate($tanggal){
         $namatanggal=date("d",strtotime($tanggal)); 
         $bulan = date("n",strtotime($tanggal));
