@@ -7,8 +7,8 @@ class Login extends CI_Controller{
     }
 
     function index(){
-        if($this->session->has_userdata('user_name')){
-            redirect('admin');
+        if($this->session->has_userdata('user_id')){
+            redirect(site_url('admin'));
         } else {
             $this->load->view('admin/login');
         }
@@ -30,20 +30,30 @@ class Login extends CI_Controller{
                //echo $login['level'];
                $this->load->model('Pengaturan_bk_model','pengaturan_bk');
                $this->pengaturan_bk->set_session_setting();
-               $this->load->view('admin/overview');
+               //$this->load->view('admin/overview');
                //echo $this->session->userdata("poin_awal");
                //echo $this->session->userdata("fitur_reward");
                //echo $this->session->userdata("operator_bk");
                //redirect('admin');
+               if($this->session->userdata('level') == "orang_tua"){
+                    redirect(site_url('wali/list_siswa'));
+               } else {
+                    redirect(site_url('admin'));
+               }
+               
             } elseif (!empty($login) && $login == "gurubukanwali"){
-                $this->load->view('admin/login');
-                echo "<script>alert('Login gagal. Maaf anda bukan wali kelas.');</script>";
-                echo $this->session->set_userdata('login','gagal');
+                // $this->load->view('admin/login');
+                // echo "<script>alert('Login gagal. Maaf anda bukan wali kelas.');</script>";
+                // echo $this->session->set_flashdata('login','gagal');
+                echo $this->session->set_flashdata('login','Login gagal. Maaf Anda bukan Guru Wali Kelas.');
+                redirect(site_url('admin/login'));
             } else {
-                echo "gagal";
-                echo $login;
-                echo $userdata->autho();
-                echo $this->session->set_userdata('login','gagal');
+                
+                //echo $login;
+                echo $this->session->set_flashdata('login','Maaf, Username / Password Anda Salah');
+                redirect(site_url('admin/login'));
+                // echo "hey kamu gagal";
+                // echo  $this->session->flashdata('login');
             }
         }
     }

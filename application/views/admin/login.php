@@ -12,11 +12,18 @@
     <div class="card card-login mx-auto dev_loginbox">
       <div class="card-header">Login
       </div>
+      
       <div class="card-body">
         <form method="post" action="<?php echo base_url('admin/login/autho') ?>" enctype="multipart/form-data">
+          <?php if ($this->session->flashdata('login')): ?>
+          <div class="alert alert-danger" role="alert">
+            <?php echo $this->session->flashdata('login'); ?>
+            
+          </div>
+          <?php endif; ?>
           <div class="form-group">
             <div class="form-label-group">
-              <input type="text" id="user_username" class="form-control <?php echo form_error('user_username')? 'is-invalid':'' ?>" name="user_username" placeholder="User Name" required="required" autofocus="autofocus">
+              <input type="text" id="user_username" class="form-control <?php echo form_error('user_username')? 'is-invalid':'' ?>" name="user_username" placeholder="User Namaa" required="required" autofocus="autofocus">
               <label for="user_username">User Name</label>
             </div>
             <div class="invalid-feedback">
@@ -43,8 +50,8 @@
           <input class="btn btn-primary btn-block" type="submit" name="btn" value="Login" />
         </form>
         <div class="text-center">
-          <a class="d-block small mt-3" href="register.html">Register an Account</a>
-          <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+        
+         
         </div>
       </div>
     </div>

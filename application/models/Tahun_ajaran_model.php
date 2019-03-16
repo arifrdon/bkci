@@ -1,14 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script allowed');
-class Kelas_model extends CI_Model{
-    private $_table = "kelas";
+class Tahun_ajaran_model extends CI_Model{
+    private $_table = "tahun_ajaran";
 
-    public $id_kelas;
-    public $nama_kelas;
+    public $id_tahun;
+    public $tahun;
+    public $keterangan_tahun_ajaran;
 
-    public $column_order = array(null, 'id_kelas', 'nama_kelas');
-    public $column_search = array('id_kelas', 'nama_kelas');
-    public $order = array('id_kelas' => 'asc');
+    public $column_order = array(null, 'id_tahun', 'tahun', 'keterangan_tahun_ajaran');
+    public $column_search = array('id_tahun', 'tahun', 'keterangan_tahun_ajaran');
+    public $order = array('id_tahun' => 'asc');
 
     public function rules(){
        
@@ -76,19 +77,7 @@ class Kelas_model extends CI_Model{
 
     public function getById($id)
     {
-        return $this->db->get_where($this->_table,["id_kelas"=> $id])->row();
-    }
-
-    public function getDropdownLaporan(){
-        if($this->session->userdata('level') == "guru"){
-            $this->db->select('a.id_kelas,a.nama_kelas');
-            $this->db->from($this_table." as a");
-            $this->db->join("wali_kelas as b","a.id_kelas = b.id_kelas", "inner");
-            $this->db->where("b.nip",$this->session->userdata('user_username'));
-            return $this->db->get()->result();
-        } else {
-            return $this->getAll();
-        }
+        return $this->db->get_where($this->_table,["id_tahun"=> $id])->row();
     }
 
     public function save()

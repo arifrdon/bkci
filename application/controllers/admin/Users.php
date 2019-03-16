@@ -5,6 +5,9 @@ class Users extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        if(!$this->session->has_userdata('user_id')){
+            redirect('admin/login');
+        } 
         $this->load->model("userdata_model");
         $this->load->library("form_validation");
     }
@@ -39,7 +42,11 @@ class Users extends CI_Controller
         $validation = $this->form_validation;
         $validation->set_rules($user->rules_changepw());
         if($validation->run()){
-            $user->update();
+            if($user->update_password()){
+                $this->session->set_flashdata('success','Berhasil Diubah');
+            } else {
+                $this->session->set_flashdata('failed','Gagal Diubah. Password Anda Salah.');
+            }
         }
         $this->load->view('admin/users/change_password_form');
     }
@@ -48,9 +55,8 @@ class Users extends CI_Controller
         if($this->userdata_model->delete($id)){
             echo "hay1";
             redirect(site_url('admin/users'));
-           echo "hay2";
+            echo "hay2";
         }
-        
     }
     public function ajax_list()
     {

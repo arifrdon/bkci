@@ -20,38 +20,42 @@
 
 				<?php if ($this->session->flashdata('success')): ?>
 				<div class="alert alert-success" role="alert">
-					<?php echo $this->session->flashdata('success'); ?>
+					<?php echo $this->session->flashdata('success'); unset($_SESSION['success']); ?>
+				</div>
+				<?php endif; ?>
+				<?php if ($this->session->flashdata('failed')): ?>
+				<div class="alert alert-danger" role="alert">
+					<?php echo $this->session->flashdata('failed'); unset($_SESSION['failed']); ?>
 				</div>
 				<?php endif; ?>
 
 				<div class="card mb-3">
 					
 					<div class="card-body">
-
 						<form action="<?php //base_url('admin/product/add') ?>" method="post" enctype="multipart/form-data" >
 							<div class="form-group">
-                                <label for="user_name">Password Saat Ini *</label>
-                                <input type="text" name="user_name" placeholder="User Name" class="form-control <?php echo form_error('user_name') ? 'is-invalid':'' ?>">
+                                <label for="cur_pass">Password Saat Ini *</label>
+                                <input type="password" name="cur_pass" placeholder="Password Saat Ini" class="form-control <?php echo form_error('cur_pass') ? 'is-invalid':'' ?>">
                                 <div class="invalid-feedback">
-                                    <?php echo form_error('user_name'); ?>
+                                    <?php echo form_error('cur_pass'); ?>
                                 </div>
                             </div>
 
 							<div class="form-group">
-								<label for="user_password">Password Baru *</label>
-								<input class="form-control <?php echo form_error('user_password') ? 'is-invalid':'' ?>"
-								 type="text" name="user_password" placeholder="Password" />
+								<label for="new_pass">Password Baru *</label>
+								<input class="form-control <?php echo form_error('new_pass') ? 'is-invalid':'' ?>"
+								 type="password" name="new_pass" placeholder="Password Baru" />
 								<div class="invalid-feedback">
-									<?php echo form_error('user_password') ?>
+									<?php echo form_error('new_pass') ?>
 								</div>
                             </div>
 
                             <div class="form-group">
-								<label for="user_password">Konfirmasi Password Baru*</label>
-								<input class="form-control <?php echo form_error('user_password') ? 'is-invalid':'' ?>"
-								 type="text" name="user_password" placeholder="Password" />
+								<label for="new_pass_c">Konfirmasi Password Baru*</label>
+								<input class="form-control <?php echo form_error('new_pass_c') ? 'is-invalid':'' ?>"
+								 type="password" name="new_pass_c" placeholder="Konfirmasi Password Baru" />
 								<div class="invalid-feedback">
-									<?php echo form_error('user_password') ?>
+									<?php echo form_error('new_pass_c') ?>
 								</div>
                             </div>
                             

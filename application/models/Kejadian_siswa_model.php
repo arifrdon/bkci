@@ -19,6 +19,10 @@ class Kejadian_siswa_model extends CI_Model{
     public $column_search_score = array('noindukdistinct', 'namasiswa', 'poin_awal', 'poin_reward', 'poin_pelanggaran');
     public $order_score = array('poin_akhir' => 'asc');
 
+    public $column_order_listsiswadet = array('b.NAMA_KEJADIAN', 'a.TANGGAL_KEJADIAN', 'b.TIPE_KEJADIAN', 'b.POIN_KEJADIAN',null);
+    public $column_search_listsiswadet = array('b.NAMA_KEJADIAN', 'a.TANGGAL_KEJADIAN', 'b.TIPE_KEJADIAN', 'b.POIN_KEJADIAN');
+    public $order_listsiswadet = array('a.ID_KEJADIAN_SISWA' => 'desc');
+
     public function rules(){
         return [
             ['field' => 'no_induk',
@@ -257,9 +261,7 @@ class Kejadian_siswa_model extends CI_Model{
 
     }
 
-    function _get_datatables_query_score()
-    {
-         
+    function queryscore($no_induk=0){
         if($this->session->userdata('fitur_reward') == 1){
             $this->db->select('COALESCE(sum( a.POIN_KEJADIAN ),0)');
             $this->db->from('daftar_kejadian as a');
@@ -292,6 +294,9 @@ class Kejadian_siswa_model extends CI_Model{
             $this->db->where('d.nip', $this->session->userdata('user_username'));
         }
         $this->db->where('a.AKTIF', 1);
+        if($no_induk != 0){
+            $this->db->where('a.NO_INDUK', $no_induk);
+        }
         $subgabungrnp = $this->db->get_compiled_select();
         if($this->session->userdata('fitur_reward') == 1 && $this->session->userdata('operator_bk') == "tambah"){
             $this->db->select('noindukdistinct,namasiswa,poin_awal,poin_reward ,poin_pelanggaran, (poin_awal-poin_reward+poin_pelanggaran) as poin_akhir');
@@ -306,7 +311,12 @@ class Kejadian_siswa_model extends CI_Model{
             $this->db->select('noindukdistinct,namasiswa,poin_awal ,poin_pelanggaran, (poin_awal-poin_pelanggaran) as poin_akhir');
         }
         $this->db->from('('.$subgabungrnp.') abcd');
+    }
 
+    function _get_datatables_query_score()
+    {
+        $this->queryscore();
+        
         $i = 0;
 
         foreach ($this->column_search_score as $item)
@@ -369,6 +379,7 @@ class Kejadian_siswa_model extends CI_Model{
         $this->db->join('daftar_kejadian as b', 'a.ID_DAFTAR_KEJADIAN=b.ID_DAFTAR_KEJADIAN', 'inner');
         $this->db->where("a.NO_INDUK",$id);
         $this->db->where("a.AKTIF",1);
+        $this->db->order_by("a.ID_KEJADIAN_SISWA","desc");
         if($this->session->userdata('fitur_reward') == 0){
             $this->db->where("b.TIPE_KEJADIAN","pelanggaran");
         }
@@ -402,5 +413,76 @@ class Kejadian_siswa_model extends CI_Model{
         }
         $this->db->where("a.TANGGAL_KEJADIAN between '".$post["dtpstart"]."' and '".$post["dtpend"]."'");
         return $this->db->get()->result();
+    }
+    function _get_datatables_query_listsiswadet($id)
+    {
+        $this->db->select('a.ID_KEJADIAN_SISWA, a.ID_DAFTAR_KEJADIAN,b.NAMA_KEJADIAN,a.TANGGAL_KEJADIAN,b.TIPE_KEJADIAN,b.POIN_KEJADIAN');
+        $this->db->from($this->_table." as a");
+        $this->db->join('daftar_kejadian as b', 'a.ID_DAFTAR_KEJADIAN=b.ID_DAFTAR_KEJADIAN', 'inner');
+        $this->db->where("a.NO_INDUK",$id);
+        $this->db->where("a.AKTIF",1);
+
+        if($this->session->userdata('fitur_reward') == 0){
+            $this->db->where("TIPE_KEJADIAN","pelanggaran");
+        }
+
+        $i = 0;
+
+        foreach ($this->column_search_listsiswadet as $item)
+        {
+            if($_POST['search']['value'])
+            {
+                if($i===0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                }
+                else
+                {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+ 
+                if(count($this->column_search_listsiswadet) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+        if(isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->column_order_listsiswadet[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } 
+        else if(isset($this->order))
+        {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }
+    function get_datatables_listsiswadet($id)
+    {
+        $this->_get_datatables_query_listsiswadet($id);
+        if($_POST['length'] != -1)
+        $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function count_filtered_listsiswadet($id)
+    {
+        $this->_get_datatables_query_listsiswadet($id);
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+ 
+    public function count_all_listsiswadet($id)
+    {
+        $this->db->from($this->_table);
+        $this->db->where("NO_INDUK",$id);
+        $this->db->where("AKTIF",1);
+        return $this->db->count_all_results();
+    }
+
+    public function getsinglescore($id){
+        $this->queryscore($id);
+        $query = $this->db->get();
+        return $query->row();
     }
 }

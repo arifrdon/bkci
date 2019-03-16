@@ -2,6 +2,9 @@
 class Pengaturan_bk extends CI_Controller{
     function __construct(){
         parent::__construct();
+        if(!$this->session->has_userdata('user_id')){
+            redirect('admin/login');
+        } 
         $this->load->model('pengaturan_bk_model');
         $this->load->library('form_validation');
     }

@@ -2,6 +2,9 @@
 class Kejadian_siswa extends CI_Controller{
     function __construct(){
         parent::__construct();
+        if(!$this->session->has_userdata('user_id')){
+            redirect('admin/login');
+        } 
         $this->load->model('kejadian_siswa_model');
         $this->load->library('form_validation');
     }
@@ -70,17 +73,20 @@ class Kejadian_siswa extends CI_Controller{
         $data["idchatbk"] = $id;
         $this->load->view('admin/kejadian_siswa/chat_bk',$data);
     }
-    function deletechat($id=null,$redirid=null){
+    function deletechat($id=null,$redirid=null,$redirfromwali=null){
         if(!isset($id)) show_404();
         $this->load->model('forum_kejadian_model','forum_kejadian');
         if($this->forum_kejadian->delete($id)){
             echo "aa";
             $this->session->set_flashdata('delete_success','Hapus Sukses.');
-            redirect(site_url('admin/kejadian_siswa/chat_bk/'.$redirid));
         } else {
             echo "bb";
             $this->session->set_flashdata('delete_fail','Hapus Gagal, kontak Admin Anda.');
+        }
+        if($redirfromwali == null){
             redirect(site_url('admin/kejadian_siswa/chat_bk/'.$redirid));
+        } else {
+            redirect(site_url('wali/list_siswa/detail/'.$redirfromwali.'/komentar/'.$redirid));
         }
     }
     function score_list($secondparam=null,$id=null, $na=null){

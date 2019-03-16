@@ -24,13 +24,18 @@ class Userdata_model extends CI_Model{
 
     function rules_changepw(){
         return [
-            ['field'=>'user_username',
-            'label'=> 'Username',
+            ['field'=>'cur_pass',
+            'label'=> 'Password Saat Ini',
             'rules'=> 'required'],
             [
-             'field'=>'user_password',
-             'label'=>'Password',
-             'rules'=>'required'   
+            'field'=>'new_pass',
+            'label'=>'Password Baru',
+            'rules'=>'required'   
+            ],
+            [
+            'field'=>'new_pass_c',
+            'label'=>'Konfirmasi Password Baru',
+            'rules'=>'required|matches[new_pass]'   
             ]
         ];
     }
@@ -66,8 +71,6 @@ class Userdata_model extends CI_Model{
             $queryortu = $this->orang_tua->loginortu($user_username,$user_password);
             return $queryortu;
         }
-        
-
     }
 
     function getAll(){
@@ -92,6 +95,37 @@ class Userdata_model extends CI_Model{
         $this->user_username = $post['user_username'];
         $this->user_password = $post['user_password'];
         $this->db->update($this->_table,$this,["user_id"=>$this->user_id]);
+    }
+    function check_cur_pass($cur_pass){
+        $this->db->select('*');
+        $this->db->from($this->_table);
+        $this->db->where("user_username",$this->session->userdata('user_username'));
+        $this->db->where("user_password",MD5($cur_pass));
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return TRUE;
+        } 
+        else
+        {
+            return FALSE;
+        }
+    }
+    function update_password(){
+        $post = $this->input->post();
+        $cur_pass = $post['cur_pass'];
+        $new_pass = $post['new_pass'];
+        $new_pass_c = $post['new_pass_c'];
+        if($this->check_cur_pass($cur_pass)){
+            $this->db->set('user_password', MD5($new_pass));
+            $this->db->where('user_username', $this->session->userdata('user_username'));
+            if($this->db->update($this->_table)){
+                return TRUE;
+            } else {
+                return FALSE;
+            }; 
+        } else {
+            return FALSE;
+        }
     }
     function delete($id){
        return $this->db->delete($this->_table,["user_id"=>$id]);

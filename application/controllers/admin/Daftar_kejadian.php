@@ -2,6 +2,9 @@
 class Daftar_kejadian extends CI_Controller{
     function __construct(){
         parent::__construct();
+        if(!$this->session->has_userdata('user_id')){
+            redirect('admin/login');
+        } 
         $this->load->model('daftar_kejadian_model');
         $this->load->library('form_validation');
     }

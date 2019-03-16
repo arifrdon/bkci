@@ -36,7 +36,11 @@
 
 				<div class="card mb-3">
 					<div class="card-header">
-						<a href="<?php echo site_url('admin/kejadian_siswa/') ?>"><i class="fas fa-arrow-left"></i> Back</a>
+						<?php if($this->session->userdata('level') != 'orang_tua'){ ?>
+							<a href="<?php echo site_url('admin/kejadian_siswa/') ?>"><i class="fas fa-arrow-left"></i> Back</a>
+						<?php } else { ?>
+							<a href="<?php echo site_url('wali/list_siswa/detail/'.$kejadiansw->NO_INDUK) ?>"><i class="fas fa-arrow-left"></i> Back</a>
+						<?php } ?>
 					</div>
 					<div class="card-body">
 
@@ -77,10 +81,22 @@
                                     <?php 
                                         if($this->session->userdata('user_id') == $fk->user_id){
                                     ?>
-                                    <a href="<?php echo site_url('admin/kejadian_siswa/deletechat/'.$fk->id_forum.'/'.$idchatbk)  ?>"
-                                        onclick="return confirm('Apakah Anda yakin untuk menghapus?');" > 
-                                        <div class="btn btn-danger btn-xs"><i class="fa fa-times"></i></div>
-                                    </a>
+										<?php 
+											if($this->session->userdata('level') != 'orang_tua'){ ?>
+											<a href="<?php echo site_url('admin/kejadian_siswa/deletechat/'.$fk->id_forum.'/'.$idchatbk)  ?>"
+											onclick="return confirm('Apakah Anda yakin untuk menghapus?');" > 
+											<div class="btn btn-danger btn-xs"><i class="fa fa-times"></i></div>
+											</a>
+										<?php 
+											} else {
+										?>
+											<a href="<?php echo site_url('admin/kejadian_siswa/deletechat/'.$fk->id_forum.'/'.$idchatbk.'/'.$kejadiansw->NO_INDUK)  ?>"
+											onclick="return confirm('Apakah Anda yakin untuk menghapus?');" > 
+											<div class="btn btn-danger btn-xs"><i class="fa fa-times"></i></div>
+											</a>
+										<?php 
+											}
+										?>
                                     <?php 
                                         }
                                     ?>
