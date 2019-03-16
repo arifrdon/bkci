@@ -22,6 +22,19 @@ class Userdata_model extends CI_Model{
         ];
     }
 
+    function rules_changepw(){
+        return [
+            ['field'=>'user_username',
+            'label'=> 'Username',
+            'rules'=> 'required'],
+            [
+             'field'=>'user_password',
+             'label'=>'Password',
+             'rules'=>'required'   
+            ]
+        ];
+    }
+
     function autho(){
         $post = $this->input->post();
          $user_username = $post["user_username"];

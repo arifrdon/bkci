@@ -179,7 +179,7 @@
 		<!-- /#wrapper -->
 
 		<?php $this->load->view("admin/_partials/scrolltop.php") ?>
-
+        <?php $this->load->view("admin/_partials/modal"); ?>                        
 		<?php $this->load->view("admin/_partials/js.php") ?>
         <?php 
         if(isset($dtpstart_b) && !empty($dtpstart_b) && isset($dtpend_b) && !empty($dtpend_b)) { 

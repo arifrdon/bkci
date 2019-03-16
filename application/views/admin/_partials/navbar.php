@@ -53,8 +53,8 @@
             <i class="fas fa-user-circle fa-fw"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="#">Settings</a>
-            <a class="dropdown-item" href="#">Activity Log</a>
+            <a class="dropdown-item" href="<?php echo site_url('admin/pengaturan_bk/edit') ?>">Setting</a>
+            <a class="dropdown-item" href="<?php echo site_url('admin/users/change_password') ?>">Ubah Password</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="<?php echo site_url('admin/logout') ?>" data-toggle="modal" data-target="#logoutModal">Logout</a>
           </div>

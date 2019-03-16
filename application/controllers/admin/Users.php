@@ -34,6 +34,15 @@ class Users extends CI_Controller
         $data["user"] = $user->getById($id);
         $this->load->view('admin/users/edit_form',$data);
     }
+    function change_password(){
+        $user = $this->userdata_model;
+        $validation = $this->form_validation;
+        $validation->set_rules($user->rules_changepw());
+        if($validation->run()){
+            $user->update();
+        }
+        $this->load->view('admin/users/change_password_form');
+    }
     function delete($id=null){
         if(!isset($id)) show_404();
         if($this->userdata_model->delete($id)){
