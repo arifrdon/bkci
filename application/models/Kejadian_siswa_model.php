@@ -174,13 +174,19 @@ class Kejadian_siswa_model extends CI_Model{
 
     public function save()
     {
+        $this->load->model('notif_bk_model','notif_bk');
         $post = $this->input->post();
         // $this->product_id = uniqid();
 
         $this->NO_INDUK = $post["no_induk"];
         $this->ID_DAFTAR_KEJADIAN = $post["id_daftar_kejadian"];
         $this->TANGGAL_KEJADIAN = $post['tanggalkejadian']." ".$post['jam'];
+
+        $this->db->trans_start();
         $this->db->insert($this->_table, $this);
+        $id_kejadian_siswa = $this->db->insert_id();
+        $this->notif_bk->save($id_kejadian_siswa, $this->session->userdata('user_id'), $this->session->userdata('level'), $this->TANGGAL_KEJADIAN, 0);
+        $this->db->trans_complete();
     }
 
     public function update()
@@ -483,6 +489,11 @@ class Kejadian_siswa_model extends CI_Model{
     public function getsinglescore($id){
         $this->queryscore($id);
         $query = $this->db->get();
-        return $query->row();
+        if($query->num_rows() > 0){
+            return $query->row()->poin_akhir;
+        } else {
+            return $this->session->userdata('poin_awal');
+        }
+        
     }
 }

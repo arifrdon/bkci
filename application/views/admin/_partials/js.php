@@ -5,14 +5,14 @@
 <!-- Core plugin JavaScript-->
 <script src="<?php echo base_url('assets/jquery-easing/jquery.easing.min.js') ?>"></script>
 <!-- Page level plugin JavaScript-->
-<script src="<?php echo base_url('assets/chart.js/Chart.min.js') ?>"></script>
+<!-- <script src="<?php echo base_url('assets/chart.js/Chart.min.js') ?>"></script> -->
 <script src="<?php echo base_url('assets/datatables/jquery.dataTables.js') ?>"></script>
 <script src="<?php echo base_url('assets/datatables/dataTables.bootstrap4.js') ?>"></script>
 <!-- Custom scripts for all pages-->
 <script src="<?php echo base_url('js/sb-admin.min.js') ?>"></script>
 <!-- Demo scripts for this page-->
 <script src="<?php echo base_url('js/demo/datatables-demo.js') ?>"></script>
-<script src="<?php echo base_url('js/demo/chart-area-demo.js') ?>"></script>
+<!-- <script src="<?php echo base_url('js/demo/chart-area-demo.js') ?>"></script> -->
 
 <!-- jquery ui for datepicker-->
 <script src="<?php echo base_url('js/jquery-ui-1.10.1.custom.min.js') ?>"></script>
@@ -49,7 +49,7 @@ $(document).ready(function(){
     
     load_unseen_notification();
 
-    $(document).on('click', '.dropdown-toggle', function(){
+    $(document).on('click', '.dropdown-toggle-clicker', function(){
         $('.dropdown-toggle-bell').html('');
         load_unseen_notification('yes');
     });

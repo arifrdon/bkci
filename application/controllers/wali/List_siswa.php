@@ -26,6 +26,7 @@ class List_siswa extends CI_Controller{
             
             $data["siswa"]->tanggal_lahir = convertdateonly($data["siswa"]->tanggal_lahir);
             $data["singlescore"] = $this->kejadian_siswa_model->getsinglescore($id);
+            
             $this->load->view('wali/list_siswa_detail', $data);
         } else {
             $kejadiansw = $this->kejadian_siswa_model;

@@ -54,7 +54,7 @@
 						</div>
 					</div>
 					<div class="card-header">
-						Poin Akhir: <?php echo $singlescore->poin_akhir; ?>
+						Poin Akhir: <?php echo $singlescore; ?>
 					</div>
 				</div>
 

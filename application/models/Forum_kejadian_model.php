@@ -26,6 +26,12 @@ class Forum_kejadian_model extends CI_Model{
         return $this->db->get()->result();
        
     }
+    public function count_all()
+    {
+        $this->db->from($this->_table);
+        $this->db->where('level',"orang_tua");
+        return $this->db->count_all_results();
+    }
 
     public function getById($id)
     {
