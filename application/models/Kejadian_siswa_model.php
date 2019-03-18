@@ -494,6 +494,11 @@ class Kejadian_siswa_model extends CI_Model{
         } else {
             return $this->session->userdata('poin_awal');
         }
-        
+    }
+    public function datahighchart(){
+        $this->db->select('id_kejadian_siswa, COUNT(1) AS entries, UNIX_TIMESTAMP(DATE_ADD(DATE(tanggal_kejadian), INTERVAL 7 HOUR)) as tanggal');
+        $this->db->from($this->_table);
+        $this->db->group_by("tanggal");
+        return $this->db->get()->result();
     }
 }

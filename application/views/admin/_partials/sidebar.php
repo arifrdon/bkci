@@ -23,7 +23,7 @@
             <i class="fas fa-fw fa-users"></i>
             <span>Pengaturan Tampilan</span></a>
         </li> -->
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-folder"></i>
             <span>Data Master</span>
@@ -35,7 +35,7 @@
             <a class="dropdown-item" href="<?php echo site_url('admin/kelas') ?>">Data Kelas</a>
             <a class="dropdown-item" href="<?php echo site_url('admin/tahun_ajaran') ?>">Data Tahun Ajaran</a>
           </div>
-        </li>
+        </li> -->
         
         
         <li class="nav-item dropdown <?php echo $this->uri->segment(2) == 'daftar_kejadian' ? 'active show': '' ?>">

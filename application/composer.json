@@ -10,7 +10,6 @@
         }
     ],
     "require": {
-        "setasign/fpdf": "^1.8",
-        "ghunti/highcharts-php": "~3.0"
+        "setasign/fpdf": "^1.8"
     }
 }

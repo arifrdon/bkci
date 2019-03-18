@@ -6,20 +6,6 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit84e9433a70c0c342ce0a1042ed5eb2a9
 {
-    public static $prefixLengthsPsr4 = array (
-        'G' => 
-        array (
-            'Ghunti\\HighchartsPHP\\' => 21,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'Ghunti\\HighchartsPHP\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/ghunti/highcharts-php/src',
-        ),
-    );
-
     public static $classMap = array (
         'FPDF' => __DIR__ . '/..' . '/setasign/fpdf/fpdf.php',
     );
@@ -27,8 +13,6 @@ class ComposerStaticInit84e9433a70c0c342ce0a1042ed5eb2a9
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit84e9433a70c0c342ce0a1042ed5eb2a9::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit84e9433a70c0c342ce0a1042ed5eb2a9::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInit84e9433a70c0c342ce0a1042ed5eb2a9::$classMap;
 
         }, null, ClassLoader::class);

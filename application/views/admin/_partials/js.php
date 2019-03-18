@@ -14,14 +14,19 @@
 <script src="<?php echo base_url('js/demo/datatables-demo.js') ?>"></script>
 <!-- <script src="<?php echo base_url('js/demo/chart-area-demo.js') ?>"></script> -->
 
-<!-- jquery ui for datepicker-->
-<script src="<?php echo base_url('js/jquery-ui-1.10.1.custom.min.js') ?>"></script>
 
 <!-- js for clockpicker-->
 <script src="<?php echo base_url('js/bootstrap-clockpicker.min.js') ?>"></script>
 
 <!-- js for select2-->
 <script src="<?php echo base_url('js/select2.min.js') ?>"></script>
+
+<!-- js for highstock -->
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
+<!-- jquery ui for datepicker-->
+<script src="<?php echo base_url('js/jquery-ui-1.10.1.custom.min.js') ?>"></script>
 
 <script>
 $(document).ready(function(){

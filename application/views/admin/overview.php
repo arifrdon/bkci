@@ -82,15 +82,15 @@
           <div class="card mb-3">
             <div class="card-header">
               <i class="fas fa-chart-area"></i>
-              Area Chart Example</div>
+              Diagram Kejadian Siswa</div>
             <div class="card-body">
-              <canvas id="myAreaChart" width="100%" height="30"></canvas>
+              <div id="container22" style="width=100%;"></div>
+
             </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            <div class="card-footer small text-muted">Data Seluruh Kejadian Siswa</div>
           </div>
           
-          <div id="container">aaaaaaaaaa</div>
-          <script type="text/javascript"><?php echo $chart->printScripts(); ?></script>
+          
           
 
         </div>
@@ -111,7 +111,71 @@
     <!-- Logout Modal-->
     <?php $this->load->view("admin/_partials/modal"); ?>
     <?php $this->load->view("admin/_partials/js"); ?>
-    
+    <script type="text/javascript">
+    $(function() {
+
+        $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function(data) {
+            // Create the chart
+            window.chart = new Highcharts.StockChart({
+                chart: {
+                    renderTo: 'container22'
+                },
+
+                rangeSelector: {
+                    selected: 1,
+                    inputDateFormat: '%Y-%m-%d'
+                },
+
+                title: {
+            
+                text: 'Data Kejadian Siswa'
+            
+                },
+
+                series: [{
+                    name: 'Kejadian Siswa',
+                    data: 
+                    [
+                    <?php
+                    
+             
+              foreach($datahighchart as $dhc){
+
+                echo "[",$dhc->tanggal,"000",",",$dhc->entries,"]",",";
+              }					
+      
+            
+                    ?>
+
+                    ],
+                    tooltip: {
+                        valueDecimals: 2
+                    }}]
+
+            }, function(chart) {
+
+                // apply the date pickers
+                setTimeout(function() {
+                    $('input.highcharts-range-selector', $('#' + chart.options.chart.renderTo)).datepicker()
+                }, 0)
+            });
+        });
+
+
+        // Set the datepicker's date format
+        $.datepicker.setDefaults({
+            dateFormat: 'yy-mm-dd',
+            onSelect: function(dateText) {
+                this.onchange();
+                this.onblur();
+            }
+        });
+      
+      
+
+    });
+
+        </script>
     
   </body>
 
