@@ -44,28 +44,37 @@
             <span>Kejadian Sekolah</span>
           </a>
           <div class="dropdown-menu <?php echo $this->uri->segment(2) == 'daftar_kejadian' ? 'show': '' ?>" aria-labelledby="pagesDropdown">
+            <?php if($this->session->userdata('level') == "admin" || $this->session->userdata('level') == "guru_bk"){ ?>
             <a class="dropdown-item <?php echo ($this->uri->segment(2) == 'daftar_kejadian' && $this->uri->segment(3) == 'add') ? 'active': '' ?>" href="<?php echo site_url('admin/daftar_kejadian/add') ?>">Tambah Kejadian Sekolah</a>
+            <?php } ?>
             <a class="dropdown-item <?php echo ($this->uri->segment(2) == 'daftar_kejadian' && $this->uri->segment(3) == null) ? 'active': '' ?>" href="<?php echo site_url('admin/daftar_kejadian') ?>">List Kejadian Sekolah</a>
           </div>
         </li>
-
+        <?php if($this->session->userdata('level') != "orang_tua"){ ?>
         <li class="nav-item dropdown <?php echo $this->uri->segment(2) == 'kejadian_siswa' ? 'active show': '' ?>">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="<?php echo $this->uri->segment(2) == 'kejadian_siswa' ? 'true': 'false' ?>">
             <i class="fas fa-fw fa-folder"></i>
             <span>Kejadian Siswa</span>
           </a>
           <div class="dropdown-menu <?php echo $this->uri->segment(2) == 'kejadian_siswa' ? 'show': '' ?>" aria-labelledby="pagesDropdown">
+          <?php if($this->session->userdata('level') == "admin" || $this->session->userdata('level') == "guru" || $this->session->userdata('level') == "guru_bk" ){ ?>
             <a class="dropdown-item <?php echo ($this->uri->segment(2) == 'kejadian_siswa' && $this->uri->segment(3) == 'add') ? 'active': '' ?>" href="<?php echo site_url('admin/kejadian_siswa/add') ?>">Tambah Kejadian Siswa</a>
+          <?php } ?>
             <a class="dropdown-item <?php echo ($this->uri->segment(2) == 'kejadian_siswa' && $this->uri->segment(3) == null) ? 'active': '' ?>" href="<?php echo site_url('admin/kejadian_siswa') ?>" href="<?php echo site_url('admin/kejadian_siswa') ?>">List Kejadian Siswa</a>
+            <?php if($this->session->userdata('level') != "guru"){ ?>
             <a class="dropdown-item <?php echo ($this->uri->segment(2) == 'kejadian_siswa' && $this->uri->segment(3) == 'score_list') ? 'active': '' ?>" href="<?php echo site_url('admin/kejadian_siswa/score_list') ?>">Skor Kejadian Siswa</a>
             <a class="dropdown-item <?php echo ($this->uri->segment(2) == 'kejadian_siswa' && $this->uri->segment(3) == 'laporan_bk') ? 'active': '' ?>" href="<?php echo site_url('admin/kejadian_siswa/laporan_bk') ?>">Laporan Kejadian Siswa</a>
+            <?php } ?>
           </div>
         </li>
+        <?php if($this->session->userdata('level') != "guru"){ ?>
         <li class="nav-item <?php echo $this->uri->segment(2) == 'pengaturan_bk' ? 'active': '' ?>">
           <a class="nav-link" href="<?php echo site_url('admin/pengaturan_bk/edit') ?>">
             <i class="fas fa-fw fa-cog"></i>
             <span>Pengaturan BK</span></a>
         </li>
+        <?php } ?>
+        <?php } ?>
       </ul>
 
       

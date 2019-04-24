@@ -18,9 +18,11 @@
 
 				<!-- DataTables -->
 				<div class="card mb-3">
+				<?php if($this->session->userdata('level') == "admin" || $this->session->userdata('level') == "guru_bk"){ ?>
 					<div class="card-header">
 						<a href="<?php echo site_url('admin/daftar_kejadian/add') ?>"><i class="fas fa-plus"></i> Add New</a>
 					</div>
+				<?php } ?>
 					
 					<?php if ($this->session->flashdata('delete_fail')): ?>
 						<div class="alert alert-danger" role="alert">

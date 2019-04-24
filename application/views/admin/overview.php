@@ -82,12 +82,15 @@
           <div class="card mb-3">
             <div class="card-header">
               <i class="fas fa-chart-area"></i>
-              Diagram Kejadian Siswa</div>
-            <div class="card-body">
-              <div id="container22" style="width=100%;"></div>
-
+              Diagram Kejadian Siswa
             </div>
-            <div class="card-footer small text-muted">Data Seluruh Kejadian Siswa</div>
+            <div class="card-body">
+              <div id="container22" style="width=100%;">
+              </div>
+            </div>
+            <div class="card-footer small text-muted">
+              Data Seluruh Kejadian Siswa
+            </div>
           </div>
           
           
@@ -137,16 +140,10 @@
                     data: 
                     [
                     <?php
-                    
-             
-              foreach($datahighchart as $dhc){
-
-                echo "[",$dhc->tanggal,"000",",",$dhc->entries,"]",",";
-              }					
-      
-            
+                      foreach($datahighchart as $dhc){
+                        echo "[",$dhc->tanggal,"000",",",$dhc->entries,"]",",";
+                      }
                     ?>
-
                     ],
                     tooltip: {
                         valueDecimals: 2
@@ -170,9 +167,6 @@
                 this.onblur();
             }
         });
-      
-      
-
     });
 
         </script>

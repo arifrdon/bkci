@@ -18,8 +18,6 @@
 
 				<?php $this->load->view("admin/_partials/breadcrumb.php") ?>
 
-				
-
 				<div class="card mb-3">
 					<div class="card-header">
 						<a href="<?php echo site_url('admin/kejadian_siswa/score_list') ?>"><i class="fas fa-arrow-left"></i> Back</a>
