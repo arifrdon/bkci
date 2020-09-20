@@ -3,11 +3,10 @@
 <head>
     <?php $this->load->view("admin/_partials/head"); ?>
 </head>
-<body class="bg-dark">
-
+<body class="bg-full-login">
   <div class="container">
     <div class=" card-body dev_loginlogo">
-      <img class="imgloginlogo" src="<?php echo base_url('upload/logo/logologin.png'); ?>" alt="">
+      <img class="imgloginlogo" src="<?php echo base_url('upload/logo/bklogo3.svg'); ?>" alt="">
     </div>
     <div class="card card-login mx-auto dev_loginbox">
       <div class="card-header">Login

@@ -45,7 +45,9 @@
             <i class="fas fa-user-circle fa-fw"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+          <?php if($this->session->userdata('level') == "guru_bk" || $this->session->userdata('level') == "admin"){ ?>
             <a class="dropdown-item" href="<?php echo site_url('admin/pengaturan_bk/edit') ?>">Setting</a>
+          <?php } ?>
             <a class="dropdown-item" href="<?php echo site_url('admin/users/change_password') ?>">Ubah Password</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="<?php echo site_url('admin/logout') ?>" data-toggle="modal" data-target="#logoutModal">Logout</a>

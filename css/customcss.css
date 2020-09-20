@@ -12,3 +12,10 @@
     width:140px;
     height: auto;
 }
+.bg-full-login { 
+    background: url(../upload/bk/b2.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }

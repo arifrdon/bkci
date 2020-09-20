@@ -29,3 +29,5 @@
 
     <!-- select2 css-->
     <link href="<?php echo base_url('css/select2.min.css') ?>" rel="stylesheet">
+
+    <link rel="icon" href="<?php echo base_url('upload/logo/bklogo3.svg') ?>">
